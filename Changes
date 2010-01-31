@@ -1,3 +1,7 @@
 0.001     2010-01-31 hdp
 
   * first release
+
+0.002     2010-01-31 hdp
+
+  * prereq on Test::More with done_testing()
