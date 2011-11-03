@@ -30,8 +30,11 @@ sub parse_selector {
       my ($element, $id, $class, %attr, %pseudo);
       $element = $1 if s/^($re_name|\*)//;
       SUB: {
-        $id    = $1, redo SUB if s/^\#($re_name)//;
-        $class = $1, redo SUB if s/^\.($re_name)//;
+        $id = $1, redo SUB if s/^\#($re_name)//;
+        if (s/^\.($re_name)//) {
+          $class = join '.', grep(defined, $class, $1);
+          redo SUB;
+        }
         if (s/$re_attr_value//) {
           $attr{$1}{$2} = $3;
           redo SUB;

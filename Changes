@@ -7,3 +7,5 @@
   * prereq on Test::More with done_testing()
 
 0.003     2011-11-03 yko
+
+  * multiple class selectors support

@@ -19,6 +19,8 @@ is_deeply [ parse('#foo:first, .bar:nth(2)') ],
     [ { class => 'bar', pseudo => { nth => 2 } } ],
   ];
 
+is_deeply [parse('.first.second.third')], [[{class => 'first.second.third'}]];
+
 is_deeply
   [ parse('foo#bar:baz.quux') ],
   [ parse('foo.quux:baz#bar') ],
