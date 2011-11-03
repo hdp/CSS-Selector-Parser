@@ -5,3 +5,5 @@
 0.002     2010-01-31 hdp
 
   * prereq on Test::More with done_testing()
+
+0.003     2011-11-03 yko
