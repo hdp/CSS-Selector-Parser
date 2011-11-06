@@ -2,7 +2,7 @@
 
   * first release
 
-0.002     Sun Nov 06 16:26:38 2011
+0.002     2010-01-31 hdp
 
   * prereq on Test::More with done_testing()
 
