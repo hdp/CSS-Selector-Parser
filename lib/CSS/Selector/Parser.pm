@@ -130,8 +130,10 @@ Supported options:
 
 =item class_as_array
 
-If set, class will be always arrayref. Each element of class will represent
-a single class defined in selector.
+If set, C<class> will always be an arrayref, even if no class was present in
+the selector (in which case it will be empty).
+
+See the description of C<class> below.
 
 =back
 
@@ -149,9 +151,9 @@ C<bar> in C<foo#bar.baz>.  Note: NOT C<[id="..."]>.
 
 =item class
 
-C<baz.qux> in C<foo#bar.baz.qux> if C<class_as_array> option is not set.
+C<baz.quux> in C<foo#bar.baz.quux> if C<class_as_array> option is not set.
 
-[C<baz>, C<qux>] in C<foo#bar.baz.qux> if C<class_as_array> option is set.
+[C<baz>, C<quux>] in C<foo#bar.baz.quux> if C<class_as_array> option is set.
 
 Note: NOT C<[class="..."]>.
 
