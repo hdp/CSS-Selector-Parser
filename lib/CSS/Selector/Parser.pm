@@ -18,6 +18,8 @@ my $re_comma      = qr/^\s*,/;
 
 sub parse_selector {
   local $_ = shift;
+  my %options = @_;
+
   my @rules;
   s/\s+$//;
   RULE: {
@@ -30,8 +32,11 @@ sub parse_selector {
       my ($element, $id, $class, %attr, %pseudo);
       $element = $1 if s/^($re_name|\*)//;
       SUB: {
-        $id    = $1, redo SUB if s/^\#($re_name)//;
-        $class = $1, redo SUB if s/^\.($re_name)//;
+        $id = $1, redo SUB if s/^\#($re_name)//;
+        if (s/^\.($re_name)//) {
+          $class = join '.', grep(defined, $class, $1);
+          redo SUB;
+        }
         if (s/$re_attr_value//) {
           $attr{$1}{$2} = $3;
           redo SUB;
@@ -50,6 +55,10 @@ sub parse_selector {
           }
           redo SUB;
         }
+      }
+
+      if ($options{class_as_array}) {
+        $class = defined $class ? [split /\.+/, $class] : [];
       }
 
       my $simple = {
@@ -110,9 +119,21 @@ ways to customize exporting.
 =head2 parse_selector
 
   my @rules = parse_selector($selector);
+  my @rules = parse_selector($selector, %options);
 
 CSS selectors are mapped to Perl data structures.  Each set of selectors is
 returned as an arrayref of hashrefs (see L</SYNOPSIS> for an example).
+
+Supported options:
+
+=over
+
+=item class_as_array
+
+If set, class will be always arrayref. Each element of class will represent
+a single class defined in selector.
+
+=back
 
 The hashrefs have:
 
@@ -128,7 +149,11 @@ C<bar> in C<foo#bar.baz>.  Note: NOT C<[id="..."]>.
 
 =item class
 
-C<baz> in C<foo#bar.baz>.  Note: NOT C<[class="..."]>.
+C<baz.qux> in C<foo#bar.baz.qux> if C<class_as_array> option is not set.
+
+[C<baz>, C<qux>] in C<foo#bar.baz.qux> if C<class_as_array> option is set.
+
+Note: NOT C<[class="..."]>.
 
 =item attr
 
